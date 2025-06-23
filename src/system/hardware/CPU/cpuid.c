@@ -33,12 +33,12 @@ unsigned int cpu_get_max_supported_extended_leaf(void){
 /// @param leaf target to examine
 /// @return int true/false
 unsigned int cpu_supports_standard_leaf(unsigned int leaf){
-    return cpu_get_max_supported_leaf() > leaf;
+    return cpu_get_max_supported_leaf() >= leaf;
 }
 
 /// @brief helper function to determine if a CPU supports a extended leaf function
 /// @param leaf target to examine
 /// @return int true/false
 unsigned int cpu_supports_extended_leaf(unsigned int leaf){
-    return cpu_get_max_supported_extended_leaf() > leaf;
+    return cpu_get_max_supported_extended_leaf() >= leaf;
 }

@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include <system/hardware/CPU/cpu.h>
+#include <system/hardware/CPU/intel/processors.h>
 #include <system/hardware/CPU/specifications.h>
 #include <utils/arguments.h>
 #include <utils/terminal.h>
@@ -23,6 +24,11 @@ cpu_t init_cpu(void) {
     cpu.logical_processors  = cpu_get_logical_processor_count();
     cpu.physical_processors = cpu_get_physical_core_count();
     cpu.threads_per_core    = cpu_get_thread_per_core();
+
+    IF_VENDOR_INTEL({
+        cpu.performance_cores   = intel_cpu_get_performance_core_count();
+        cpu.efficient_cores     = intel_cpu_get_efficient_core_count();
+    });
 
     return cpu;
 }

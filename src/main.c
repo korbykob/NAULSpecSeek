@@ -6,6 +6,7 @@
 #include <utils/terminal.h>
 #include <utils/asciiart.h>
 #include <system/hardware/CPU/cpu.h>
+#include <system/hardware/CPU/intel/processors.h>
 #include <system/hardware/CPU/microarch.h>
 #include <system/hardware/CPU/specifications.h>
 
@@ -59,9 +60,13 @@ void cpu_info(cpu_t cpu){
     printf("  %sExt. Family: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.ext_family);
     printf("%sRevision: %s0x%X", BWHITE, VENDOR_COLOUR, cpu.revision);
     ASCII_DIVIDER_SMALL("Specifications", BOLD_VENDOR_COLOUR);
-    printf("%sLogical Threads: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.logical_processors);
+    printf("%sLogical Processors: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.logical_processors);
     printf("%sPhysical Cores:  %s%u\n", BWHITE, VENDOR_COLOUR, cpu.physical_processors);
     printf("%sThreads PerCore: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.threads_per_core);
+    IF_VENDOR_INTEL({
+        printf("  %sPerformance Cores: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.performance_cores);
+        printf("  %sEfficiency Cores: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.efficient_cores);
+    });
 
     /*
         Printing the CPU features (Platform Specific logic is handled within the functions below.)

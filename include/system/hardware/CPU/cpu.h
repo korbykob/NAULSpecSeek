@@ -30,6 +30,8 @@ typedef struct cpu
     unsigned int logical_processors;
     unsigned int physical_processors;
     unsigned int threads_per_core;
+    unsigned int performance_cores;
+    unsigned int efficient_cores;
 
     unsigned int max_standard_leaf;
     unsigned int max_extended_leaf;
