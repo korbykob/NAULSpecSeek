@@ -136,8 +136,11 @@ unsigned int intel_cpu_get_physical_core_count(void) {
             if (level_type == 0 || ebx == 0)
                 break;
 
-            printf("Level %u: EAX=0x%x EBX=%u ECX=0x%x (level_type=%u)\n",
-                level, eax, ebx, ecx, level_type);
+                IF_VERBOSE(3){
+                    printf("Level %u: EAX=0x%x EBX=%u ECX=0x%x (level_type=%u)\n",
+                    level, eax, ebx, ecx, level_type);
+                }
+
 
             if (level_type == 1) {  // SMT level
                 smt_mask_width = eax & 0x1F;
@@ -152,12 +155,12 @@ unsigned int intel_cpu_get_physical_core_count(void) {
         printf("Logical processors = %u\n", logical_processors);
 
         if (core_mask_width == 0) {
-            printf("Core mask width is zero, cannot compute physical cores.\n");
+            printf("Core mask width is zero, cannot compute physical cores via 0x0Bh\n");
             return 0;
         }
 
         if (core_mask_width <= smt_mask_width) {
-            printf("Core mask width (%u) <= SMT mask width (%u), invalid data.\n",
+            printf("Core mask width (%u) <= SMT mask width (%u), invalid data. :(\n",
                    core_mask_width, smt_mask_width);
             return 0;
         }
