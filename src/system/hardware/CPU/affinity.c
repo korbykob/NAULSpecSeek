@@ -11,7 +11,7 @@
 /// @param apic_core_id target CPU core APIC ID
 /// @return success 0/1
 int cpu_set_affinity(int apic_core_id){
-    #if defined(__unix__)
+    #if defined(__linux__)
     cpu_set_t set;
     CPU_ZERO(&set);
     CPU_SET(apic_core_id, &set);
