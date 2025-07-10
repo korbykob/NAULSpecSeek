@@ -133,14 +133,9 @@ unsigned int intel_cpu_get_physical_core_count(void) {
             cpuid(0x0B, level, &eax, &ebx, &ecx, &edx);
 
             unsigned int level_type = (ecx >> 8) & 0xFF;
-            if (level_type == 0 || ebx == 0)
+            if (level_type == 0 || ebx == 0){
                 break;
-
-                IF_VERBOSE(3){
-                    printf("Level %u: EAX=0x%x EBX=%u ECX=0x%x (level_type=%u)\n",
-                    level, eax, ebx, ecx, level_type);
-                }
-
+            }
 
             if (level_type == 1) {  // SMT level
                 smt_mask_width = eax & 0x1F;
