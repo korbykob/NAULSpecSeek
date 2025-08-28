@@ -29,7 +29,7 @@ typedef struct cpu
 
     unsigned int logical_processors;
     unsigned int physical_processors;
-    unsigned int threads_per_core;
+    unsigned int thread_count;
     unsigned int performance_cores;
     unsigned int efficient_cores;
 
@@ -127,6 +127,6 @@ unsigned int cpu_get_logical_processor_count();
 
 /// @brief gets how many thread each CPU core has
 /// @return uint physical cores
-unsigned int cpu_get_thread_per_core();
+unsigned int cpu_get_thread_count();
 
 #endif
