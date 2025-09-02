@@ -6,19 +6,29 @@
 
 #define FEATURES_PER_LINE   4
 
+// used to determine when we need to start a new line
+static int feature_count = 0;
+
 /// @brief prints the CPU features name and its support status given the current machine
 /// @param verbosity how verbose the user must be to have the feature printed
 /// @param status supported or not
 /// @param feature_name feature name
 void cpu_print_feature(int verbosity, int status, const char* feature_name){
     IF_VERBOSE(verbosity){
-        static int feature_count;
         feature_count++;
 
-        printf("%s%s: %s%s%s;\t\t", BWHITE,feature_name, status != 0 ? GREEN : RED, status != 0 ? "TRUE" : "FALSE", RESET);
+        printf("%s%-8s %s%-8s%s|%-8s",
+            BWHITE, feature_name,
+            status != 0 ? GREEN : RED,
+            status != 0 ? "TRUE" : "FALSE",
+            RESET, RESET);
+
         if (get_arguments().put_features_on_newline || feature_count % FEATURES_PER_LINE == 0) { printf("\n"); }
     }
 }
+
+/// reset it so we can stop generating features that chill on one line
+void reset_cpu_feature_count() { feature_count = 0; }
 
 /// @brief runs through features based on the Arch
 void cpu_check_standard_features(){
@@ -61,7 +71,7 @@ void cpu_check_standard_features(){
         cpu_print_feature(1, HAS_FEATURE(edx, 7), "MCE");
         cpu_print_feature(2, HAS_FEATURE(edx, 8), "CPCH8B");
         cpu_print_feature(1, HAS_FEATURE(edx, 9), "APIC");
-        cpu_print_feature(2, HAS_FEATURE(edx, 11), "SYSENTEXI");
+        cpu_print_feature(2, HAS_FEATURE(edx, 11), "SYSENEX");
         cpu_print_feature(1, HAS_FEATURE(edx, 12), "MTRR");
         cpu_print_feature(0, HAS_FEATURE(edx, 13), "PGE");
         cpu_print_feature(1, HAS_FEATURE(edx, 14), "MCA");
@@ -160,7 +170,7 @@ void cpu_check_extended_features(){
         cpu_print_feature(0, HAS_FEATURE(ebx, 18), "RDSEED");
         cpu_print_feature(0, HAS_FEATURE(ebx, 19), "ADX");
         cpu_print_feature(1, HAS_FEATURE(ebx, 20), "SMAP");
-        cpu_print_feature(2, HAS_FEATURE(ebx, 23), "CLFLUSHOP");
+        cpu_print_feature(2, HAS_FEATURE(ebx, 23), "CLFLSHOP");
         cpu_print_feature(0, HAS_FEATURE(ebx, 24), "CLWB");
         cpu_print_feature(0, HAS_FEATURE(ebx, 29), "SHA");
 
@@ -221,5 +231,48 @@ void cpu_check_extended_features(){
         cpu_print_feature(1, HAS_FEATURE(ecx, 29), "ENQCMD");
         cpu_print_feature(1, HAS_FEATURE(ecx, 30), "SGX_LC");
         cpu_print_feature(1, HAS_FEATURE(ecx, 31), "PKS");
+    });
+}
+
+void cpu_check_misc_features(){
+    unsigned int eax, ebx, ecx, edx;
+    cpuid(0x80000001, 0, &eax, &ebx, &ecx, &edx);
+
+    IF_VENDOR_AMD({
+        cpu_print_feature(0, HAS_FEATURE(ecx, 2), "SVM");
+        cpu_print_feature(0, HAS_FEATURE(ecx, 8), "3DPRFTCH");
+        cpu_print_feature(0, HAS_FEATURE(ecx, 11), "XOP");
+        cpu_print_feature(0, HAS_FEATURE(ecx, 13), "WDT");
+        cpu_print_feature(0, HAS_FEATURE(ecx, 16), "FMA4");
+        cpu_print_feature(1, HAS_FEATURE(ecx, 17), "TCE");
+        cpu_print_feature(1, HAS_FEATURE(ecx, 21), "TBM");
+        cpu_print_feature(2, HAS_FEATURE(ecx, 22), "TOPOEXTN");
+
+        cpu_print_feature(0, HAS_FEATURE(edx, 31), "3DNOW");
+        cpu_print_feature(1, HAS_FEATURE(edx, 30), "3DNOWEX");
+        cpu_print_feature(0, HAS_FEATURE(edx, 29), "LONGMD");
+        cpu_print_feature(0, HAS_FEATURE(edx, 26), "1GBPAGE");
+        cpu_print_feature(1, HAS_FEATURE(edx, 22), "MMXEXT");
+        cpu_print_feature(0, HAS_FEATURE(edx, 20), "NXBIT");
+    });
+
+    cpuid(0x80000007, 0, &eax, &ebx, &ecx, &edx);
+
+    IF_VENDOR_AMD({
+        cpu_print_feature(0, HAS_FEATURE(edx, 0), "THERMON");
+        cpu_print_feature(0, HAS_FEATURE(edx, 3), "THRMTRP");
+        cpu_print_feature(0, HAS_FEATURE(edx, 4), "HTC");
+        cpu_print_feature(0, HAS_FEATURE(edx, 9), "COREPB");
+        
+        cpu_print_feature(0, HAS_FEATURE(ebx, 0), "CLZERO");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 3), "INVLPGB");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 4), "RDPRU");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 8), "MEMBENF");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 14), "IBRS");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 15), "STIBP");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 21), "INVLNPG");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 24), "SSDB");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 27), "CPPC");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 28), "PSFD");
     });
 }

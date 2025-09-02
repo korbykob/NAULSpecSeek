@@ -1,6 +1,8 @@
 #ifndef _CPU_H
 #define _CPU_H  1
 
+#include <string.h>
+
 #define _AMD_VENDOR_STRING     "AuthenticAMD"
 #define _INTEL_VENDOR_STRING   "GenuineIntel"
 
@@ -29,9 +31,12 @@ typedef struct cpu
 
     unsigned int logical_processors;
     unsigned int physical_processors;
-    unsigned int thread_count;
+    unsigned int thread_count_per_core;
     unsigned int performance_cores;
     unsigned int efficient_cores;
+
+    unsigned int virtualisation;
+    unsigned int virtualisation_revision;
 
     unsigned int max_standard_leaf;
     unsigned int max_extended_leaf;
@@ -74,11 +79,17 @@ const char* cpu_get_name();
 /// @param feature_name feature name
 void cpu_print_feature(int verbosity, int status, const char* feature_name);
 
+/// reset it so we can stop generating features that chill on one line
+void reset_cpu_feature_count();
+
 /// @brief runs through features based on the Arch
 void cpu_check_standard_features();
 
 /// @brief gets the extended features from the CPUID (leaf 7 for AMD)
 void cpu_check_extended_features();
+
+/// @brief checks misc features that are important
+void cpu_check_misc_features();
 
 /// @brief helper function to determine if a CPU supports a standard leaf function
 /// @param leaf target to examine
@@ -127,6 +138,8 @@ unsigned int cpu_get_logical_processor_count();
 
 /// @brief gets how many thread each CPU core has
 /// @return uint physical cores
-unsigned int cpu_get_thread_count();
+unsigned int cpu_get_thread_count_per_core();
+
+
 
 #endif

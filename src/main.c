@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 #include <main.h>
 #include <utils/arguments.h>
@@ -9,6 +8,7 @@
 #include <system/hardware/CPU/intel/processors.h>
 #include <system/hardware/CPU/microarch.h>
 #include <system/hardware/CPU/specifications.h>
+#include <system/hardware/CPU/virtualisation.h>
 
 /// @brief Spec Seek Entry Point
 /// @param argc argument count
@@ -24,7 +24,8 @@ int main(int argc, const char** argv){
     
     ASCII_DIVIDER("Spec Seek by Mellurboo", BLUE);
     printf("%sCompiled with GCC Version %d.%d.%d\n", BLUE,__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
-    printf("%sCompiled at: %s : %s\n", BLUE, __DATE__, __TIME__);
+    printf("%sCompiled at: %s : %s", BLUE, __DATE__, __TIME__);
+    ASCII_DIVIDER("══════════════════════", BLUE);
 
     cpu_info(init_cpu());
 
@@ -33,7 +34,6 @@ int main(int argc, const char** argv){
     printf("\n%sSpec Seek has finished, Press any key to exit: ", BWHITE);
     getchar();
     #endif
-
     printf("%s", RESET);
     fflush(stdout);
 }
@@ -45,6 +45,7 @@ void cpu_info(cpu_t cpu){
         ASCII_DIVIDER("CPUID", BOLD_VENDOR_COLOUR);
         printf("%sMax Supported CPUID Standard Leaf: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu_get_max_supported_leaf());
         printf("%sMax Supported CPUID Extended Leaf: %s0x%X", BWHITE, VENDOR_COLOUR, cpu_get_max_supported_extended_leaf());
+        ASCII_DIVIDER("═════", BOLD_VENDOR_COLOUR);
     }
 
     ASCII_DIVIDER("Processor", BOLD_VENDOR_COLOUR);
@@ -52,18 +53,18 @@ void cpu_info(cpu_t cpu){
     IF_VENDOR_AMD({printf("%sMicroarch: %s%s\n", BWHITE, VENDOR_COLOUR, amd_cpu_get_microarch(cpu.family, cpu.model, cpu.ext_model));});
     IF_VENDOR_INTEL({printf("%sMicroarch: %s%s\n", BWHITE, VENDOR_COLOUR, intel_get_cpu_microarch(cpu.family, cpu.base_model, cpu.ext_model, cpu.revision));});
     printf("%sVendor:    %s%s\n", BWHITE, VENDOR_COLOUR, cpu.vendor);
-    ASCII_DIVIDER_SMALL("Identifiers", BOLD_VENDOR_COLOUR);
+    ASCII_DIVIDER_SMALL("identifiers", BOLD_VENDOR_COLOUR);
     printf("%sModel: %s0x%X:\n", BWHITE, VENDOR_COLOUR, cpu.model);
-    printf("  %sBase Model: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.base_model);
-    printf("  %sExt. Model: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.ext_model);
+    printf(" ╠%sBase Model: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.base_model);
+    printf(" ╚%sExt. Model: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.ext_model);
     printf("%sFamily:\t%s0x%X:\n", BWHITE, VENDOR_COLOUR, cpu.family);
-    printf("  %sBase Family: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.base_family);
-    printf("  %sExt. Family: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.ext_family);
+    printf(" ╠%sBase Family: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.base_family);
+    printf(" ╚%sExt. Family: %s0x%X\n", BWHITE, VENDOR_COLOUR, cpu.ext_family);
     printf("%sRevision: %s0x%X", BWHITE, VENDOR_COLOUR, cpu.revision);
-    ASCII_DIVIDER_SMALL("Specifications", BOLD_VENDOR_COLOUR);
+    ASCII_DIVIDER_SMALL("specifications", BOLD_VENDOR_COLOUR);
     printf("%sLogical Processors: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.logical_processors);
-    printf("%sPhysical Cores:  %s%u\n", BWHITE, VENDOR_COLOUR, cpu.physical_processors);
-    printf("%sThreads PerCore: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.thread_count);
+    printf(" ╠%sPhysical Cores:  %s%u\n", BWHITE, VENDOR_COLOUR, cpu.physical_processors);
+    printf(" ╚%sThreads Per Core: %s%u\n", BWHITE, VENDOR_COLOUR, cpu.thread_count_per_core);
     // handle intels weird core archetectures.
     IF_VENDOR_INTEL({
         if (cpu_supports_standard_leaf(0x0000001A)){
@@ -75,9 +76,16 @@ void cpu_info(cpu_t cpu){
     /*
         Printing the CPU features (Platform Specific logic is handled within the functions below.)
     */
-    ASCII_DIVIDER("CPU Standard Features", BYELLOW);
+    ASCII_DIVIDER("CPU Feature Support", BYELLOW);
+    ASCII_DIVIDER_SMALL("Standard Features", BYELLOW);
+    reset_cpu_feature_count();
     cpu_check_standard_features();
-    ASCII_DIVIDER("CPU Extended Features", BYELLOW);
+    ASCII_DIVIDER_SMALL("Extended Features", BYELLOW);
+    reset_cpu_feature_count();
     cpu_check_extended_features();
+    ASCII_DIVIDER_SMALL("Miscellaneous Features", BYELLOW);
+    reset_cpu_feature_count();
+    cpu_check_misc_features();
+    ASCII_DIVIDER("═══════════════════", BYELLOW);
     printf("\n");
 }

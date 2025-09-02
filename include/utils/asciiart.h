@@ -7,37 +7,37 @@
 #define ASCII_BANNER(title, colour) \
     do { \
         printf("%s", colour); \
-        printf("===========================\n"); \
+        printf("╠═════════════════════════╣\n"); \
         printf("   %s                        \n", title); \
-        printf("===========================\n"); \
+        printf("╠═════════════════════════╣\n"); \
         printf("%s", RESET); \
     } while(0)
 
 #define ASCII_DIVIDER(title, colour) \
     do { \
         printf("%s", colour); \
-        printf("\n=============== %s ==============\n", title); \
+        printf("\n╠══════════ %s ══════════╣\n", title); \
         printf("%s", RESET); \
     } while(0)
 
 #define ASCII_DIVIDER_NOTEXT(colour) \
     do { \
         printf("%s", colour); \
-        printf("\n=================================\n"); \
+        printf("\n╠═════════════════════════╣\n"); \
         printf("%s", RESET); \
     } while(0)
 
 #define ASCII_DIVIDER_SMALL(title, colour) \
     do { \
         printf("%s", colour); \
-        printf("\n~~~~~~~~~~ %s ~~~~~~~~~~\n", title); \
+        printf("\n╭┄┄┄┄┄┄┄┄┄┄ %s ┄┄┄┄┄┄┄┄┄┄╮\n", title); \
         printf("%s", RESET); \
     } while(0)
 
 #define ASCII_DIVIDER_SMALL_NOTEXT(colour) \
     do { \
         printf("%s", colour); \
-        printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); \
+        printf("\n╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╮\n"); \
         printf("%s", RESET); \
     } while(0)
 

@@ -48,6 +48,7 @@ int print_help(void){
     printf("%s%s%s: %s\n", BWHITE, "--features-on-newline}", YELLOW, "prints all CPU features on a new line for readability");
     printf("%s%s%s: %s\n", BWHITE, "--no-ansi", YELLOW, "inhibits all ANSI escape codes, so no colour or terminal clearing");
     printf("%s%s%s: %s\n", BWHITE, "--help", YELLOW, "prints this help string");
+    printf("%s", RESET);        // because for some reason despite the fflush stdiout call it still stains the terminal!!!!
     fflush(stdout);
     return 0;
 }

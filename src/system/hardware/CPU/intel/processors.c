@@ -14,7 +14,7 @@ unsigned int performance_core_count = 0;
 
 /// @brief gets the ammount of CPU threads
 /// @return unsigned int threads
-unsigned int intel_cpu_get_thread_count(){
+unsigned int intel_cpu_get_thread_count_per_core(){
     unsigned int eax, ebx, ecx, edx;
     if (cpu_get_max_supported_leaf() >= 0x1F){
         return 0;
@@ -140,7 +140,7 @@ unsigned int intel_cpu_get_physical_core_count(void) {
         return performance_core_count + efficient_core_count;
 
     }else {
-        return intel_cpu_get_logical_processor_count() / intel_cpu_get_thread_count();
+        return intel_cpu_get_logical_processor_count() / intel_cpu_get_thread_count_per_core();
     }
 
     return 0;

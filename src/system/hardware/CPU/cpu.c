@@ -4,6 +4,7 @@
 #include <system/hardware/CPU/cpu.h>
 #include <system/hardware/CPU/intel/processors.h>
 #include <system/hardware/CPU/specifications.h>
+#include <system/hardware/CPU/virtualisation.h>
 #include <utils/arguments.h>
 #include <utils/terminal.h>
 
@@ -21,9 +22,11 @@ cpu_t init_cpu(void) {
     cpu.vendor      = cpu_get_vendor();
     cpu.revision    = cpu_get_revision();
 
+    cpu.virtualisation = cpu_get_virtualisation_enabled();
+
     cpu.logical_processors  = cpu_get_logical_processor_count();
     cpu.physical_processors = cpu_get_physical_core_count();
-    cpu.thread_count    = cpu_get_thread_count();
+    cpu.thread_count_per_core    = cpu_get_thread_count_per_core();
 
     IF_VENDOR_INTEL({
         cpu.performance_cores   = intel_cpu_get_performance_core_count();
@@ -157,9 +160,9 @@ unsigned int cpu_get_physical_core_count(){
 
 /// @brief gets how many thread each CPU core has
 /// @return uint physical cores
-unsigned int cpu_get_thread_count(){
-    IF_VENDOR_AMD({return amd_cpu_get_thread_count();});
-    IF_VENDOR_INTEL({return intel_cpu_get_thread_count();});
+unsigned int cpu_get_thread_count_per_core(){
+    IF_VENDOR_AMD({return amd_cpu_get_thread_count_per_core();});
+    IF_VENDOR_INTEL({return intel_cpu_get_thread_count_per_core();});
     return -1;
 }
 
