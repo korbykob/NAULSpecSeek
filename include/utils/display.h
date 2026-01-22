@@ -45,6 +45,6 @@
 
 #define SYMBOL_LIST_CHILD(colour) "L"
 
-#define SYMBOL_LIST_END(colour) "L"
+#define SYMBOL_LIST_END(colour) "-"
 
 #endif

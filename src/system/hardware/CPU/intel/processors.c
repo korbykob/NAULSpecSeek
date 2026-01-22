@@ -167,6 +167,42 @@ unsigned int intel_cpu_get_crystal_clock_speed() {
     return ecx;
 }
 
+cpu_cache_info_t intel_cpu_get_cache_info(void) {
+    cpu_cache_info_t info = {0,0,0,0};
+    unsigned int eax, ebx, ecx, edx;
+    unsigned int level = 0;
+
+    while (1) {
+        cpuid(0x04, level, &eax, &ebx, &ecx, &edx);
+        unsigned int cache_type = eax & 0x1F;
+        if (cache_type == 0) break;
+
+        unsigned int cache_level = (eax >> 5) & 0x7;
+        unsigned int ways = ((ebx >> 22) & 0x3FF) + 1;
+        unsigned int partitions = ((ebx >> 12) & 0x3FF) + 1;
+        unsigned int line_size = (ebx & 0xFFF) + 1;
+        unsigned int sets = ecx + 1;
+        unsigned int cache_size_kb = (ways * partitions * line_size * sets) / 1024;
+
+        switch (cache_level) {
+            case 1:
+                if (cache_type == 1) info.l1d = cache_size_kb;
+                else if (cache_type == 2) info.l1i = cache_size_kb;
+                break;
+            case 2:
+                info.l2 = cache_size_kb;
+                break;
+            case 3:
+                info.l3 = cache_size_kb;
+                break;
+        }
+
+        level++;
+    }
+
+    return info;
+}
+
 /// @brief helper function to return the ammount of performance cores on a hybrid CPU
 /// @param  VOID
 /// @return unsigned int performance cores

@@ -45,6 +45,13 @@ typedef struct cpu
     unsigned int max_extended_leaf;
 }cpu_t;
 
+typedef struct {
+    unsigned int l1d;
+    unsigned int l1i;
+    unsigned int l2;
+    unsigned int l3;
+} cpu_cache_info_t;
+
 /// @brief CPUID instruction wrapper that places results from the leaf and subleaf into respective locations
 /// @param leaf CPUID Leaf (code)
 /// @param subleaf CPUID Subleaf (int argument)
@@ -142,6 +149,10 @@ unsigned int cpu_get_logical_processor_count();
 /// @brief gets how many thread each CPU core has
 /// @return uint physical cores
 unsigned int cpu_get_thread_count_per_core();
+
+unsigned int cpu_get_nominal_frequency(void);
+
+cpu_cache_info_t cpu_get_cache_info(void);
 
 /// @brief platform agnostic function call to get the microarch for the CPU Vendor
 /// @param family CPUID Family

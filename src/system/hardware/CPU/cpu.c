@@ -175,6 +175,23 @@ unsigned int cpu_get_logical_processor_count(){
     return -1;
 }
 
+/// @brief Get CPU frequency in Hz
+/// @return nominal CPU frequency (core clock) or 0 if unavailable
+unsigned int cpu_get_nominal_frequency(void) {
+    IF_VENDOR_INTEL({return intel_cpu_get_crystal_clock_speed();});
+    IF_VENDOR_AMD({return amd_cpu_get_nominal_core_clock();});
+    return 0;
+}
+
+cpu_cache_info_t cpu_get_cache_info(void) {
+    IF_VENDOR_INTEL({return intel_cpu_get_cache_info();});
+    IF_VENDOR_AMD({return amd_cpu_get_cache_info();});
+
+    cpu_cache_info_t empty = {0,0,0,0};
+    return empty;
+}
+
+
 /// @brief platform agnostic function call to get the microarch for the CPU Vendor
 /// @param family CPUID Family
 /// @param base_model CPUID base_model

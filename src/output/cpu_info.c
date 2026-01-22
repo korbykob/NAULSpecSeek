@@ -74,19 +74,17 @@ void print_cpu_features(cpu_t cpu_ctx){
     TERM_DIVIDER_NOTEXT(BYELLOW);
 }
 
-void print_cpu_clock_info(){
-    IF_VENDOR_INTEL({
-        unsigned int cclock = intel_cpu_get_crystal_clock_speed();
-        TERM_DIVIDER("CPU Crystal Clock (Hz)", VENDOR_COLOUR);
-        printf("Crystal Clock Speed %u", cclock);
-    });
+void print_cpu_cache_info(cpu_cache_info_t cache){
+    TERM_DIVIDER_SMALL("  Cache Info  ", VENDOR_COLOUR);
+    printf("%sLevel 3: %s%ukB\n", WHITE, RED, cache.l3);
+    printf(" %s%sLevel 2: %s%ukB\n", SYMBOL_LIST_CHILD(VENDOR_COLOUR), WHITE, RED,  cache.l2);
+    printf("  %s%sLevel 1: %s%ukB\n", SYMBOL_LIST_CHILD(VENDOR_COLOUR), WHITE, RED,  cache.l1d);
+    printf("   %s%sLevel 1i: %s%ukB\n", SYMBOL_LIST_END(VENDOR_COLOUR), WHITE, RED,  cache.l1i);
+}
 
-    IF_VENDOR_AMD({        
-        unsigned int cclock = amd_cpu_get_nominal_core_clock();
-        TERM_DIVIDER("CPU Crystal Clock (Hz)", VENDOR_COLOUR);
-        printf("%sCrystal Clock Speed = %s%uhz", WHITE, BWHITE, cclock);
-        TERM_DIVIDER_NOTEXT(VENDOR_COLOUR);
-    });
+void print_cpu_clock_info(){
+    TERM_DIVIDER_SMALL("  Crystal Clock  ", VENDOR_COLOUR);
+    printf("%sCrystal Clock Frequency = %s%uhz\n", WHITE, BWHITE, cpu_get_nominal_frequency());
 }
 
 /// @brief calls upon all cpu print functions, does not override min_verbosity
@@ -95,6 +93,7 @@ void print_cpu_info(cpu_t cpu_ctx){
     print_cpu_cpuid_supported_leafs(cpu_ctx, 2);
     print_cpu_processor_identifiers(cpu_ctx);
     print_cpu_specification(cpu_ctx);
+    print_cpu_cache_info(cpu_get_cache_info());
     print_cpu_clock_info();
     print_cpu_features(cpu_ctx);
 }
