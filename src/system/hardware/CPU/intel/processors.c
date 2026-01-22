@@ -106,11 +106,13 @@ unsigned int intel_cpu_get_physical_core_count(void) {
         core_apic_t *cores = malloc(sizeof(core_apic_t) * processors);
 
         for(unsigned int i = 0; i < processors; i++){
+            #if _INTEL_AFFINITY == 1
             if (cpu_set_affinity(i) != 0){
                 printf("%s%s:%d SpecSeek failed to set affinity on pass %d\nThis is an Error, please report at https://github.com/Mellurboo/SpecSeek", BRED, __FILE__, __LINE__, i);
                 continue;   // this will mean we can see if they all fail or not? which might be helpful later.
             }
-            
+            #endif
+                        
             unsigned int apic_id = intel_cpu_get_apic_id();
             unsigned int core_type = intel_cpu_get_hybrid_core_type();
             unsigned int core_id = apic_id >> intel_cpu_get_smt_mask_width();

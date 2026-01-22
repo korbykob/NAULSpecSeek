@@ -1,5 +1,11 @@
 #define _GNU_SOURCE
 
+// settings for portability :)
+
+#define _INTEL_AFFINITY 0       // disable if you dont have a thread affinity implementation (hint: you dont)
+
+#if _INTEL_AFFINITY == 1
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -33,3 +39,5 @@ int cpu_set_affinity(int apic_core_id){
 
     return 1;
 }
+
+#endif
