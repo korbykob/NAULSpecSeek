@@ -106,8 +106,8 @@ $(WIN_OBJ_DIR_64)/%.win.o: src/%.c
 	$(MINGW_64) $(COMMON_CFLAGS) $(CFLAGS) -c $< -o $@
 
 
-run: $(ELF_TARGET_32)
-	@./$(ELF_BIN_DIR_32)/$(ELF_TARGET_32) $(RUN_ARGS)
+run: $(ELF_TARGET_64)
+	@./$(ELF_BIN_DIR_64)/$(ELF_TARGET_64) $(RUN_ARGS)
 
 #
 # Clean

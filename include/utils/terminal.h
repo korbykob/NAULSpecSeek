@@ -67,8 +67,4 @@
     we can simply just check for 'utf8' or 'UTF-8'. not sure which one i like more
 */
 
-/// @brief Check if the local is UTF-8.
-/// @return true/false
-int terminal_supports_utf8(void);
-
 #endif
