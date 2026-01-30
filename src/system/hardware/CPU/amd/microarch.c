@@ -15,11 +15,12 @@ const char* amd_cpu_get_microarch(unsigned int family, unsigned int model, unsig
         case 0x14: return "Bobcat";
         case 0x15:
             switch (model){
-                case 0x01:
-                    return "Bulldozer";
                 case 0x00:
                     switch (ext_model){
                         case 0x00:
+                            return "Bulldozer";
+                        case 0x01:
+                        case 0x02:
                             return "Piledriver";
                         case 0x03:
                             return "Steamroller";
@@ -29,6 +30,7 @@ const char* amd_cpu_get_microarch(unsigned int family, unsigned int model, unsig
                         default:
                             return "Unknown Family 21 Microarch";
                     }
+                case 0x01:
                 case 0x02:
                 case 0x03:
                     return "Piledriver";
@@ -51,28 +53,14 @@ const char* amd_cpu_get_microarch(unsigned int family, unsigned int model, unsig
         case 0x17:
             switch (ext_model){
                 case 0x00:
-                    switch (ext_model){
-                        case 0x02:
-                            return "Summit Ridge (Zen)";
-                        case 0x06:
-                        case 0x09:
-                            return "Matisse (Zen 2)";
-                        default:
-                            return "Unknown AMD Zen Microarch";
-                    }
                 case 0x01:
-                    switch(ext_model){
-                        case 0x00:
-                        case 0x01:
-                            return "Summit Ridge (Zen)"; 
-                        case 0x03:
-                        case 0x07:
-                            return "Matisse (Zen 2)";
-                        default:
-                            return "Unknown AMD Zen Microarch";
-                    }
+                    return "Summit Ridge (Zen)";
                 case 0x08:
                     return "Pinnacle Ridge (Zen +)";
+                case 0x02:
+                case 0x03:
+                case 0x07:
+                    return "Matisse (Zen 2)";
                 default:
                     return "Unknown AMD Zen Microarch";
             }

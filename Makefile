@@ -23,7 +23,7 @@ COMMON_CFLAGS = -static -Wall -Wextra -Werror -Wno-unused-function -Wno-unused-b
 #
 # Runtime arguments
 #
-RUN_ARGS ?=
+RUN_ARGS ?= --verbose 2
 
 #
 # Output directories as variables

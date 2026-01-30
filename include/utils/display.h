@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef _ASCIIART_H
-#define _ASCIIART_H  1
-
 #include <stdio.h>
 #include <utils/terminal.h>
 
@@ -43,8 +40,6 @@
         printf("%s", RESET); \
     } while(0)
 
-#define SYMBOL_LIST_CHILD(colour) "L"
+#define SYMBOL_LIST_CHILD(colour) "\\"
 
-#define SYMBOL_LIST_END(colour) "-"
-
-#endif
+#define SYMBOL_LIST_END(colour) "\\"

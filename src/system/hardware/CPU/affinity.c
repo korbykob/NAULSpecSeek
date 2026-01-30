@@ -2,7 +2,7 @@
 
 // settings for portability :)
 
-#define _INTEL_AFFINITY 0       // disable if you dont have a thread affinity implementation (hint: you dont)
+#define _INTEL_AFFINITY 1       // disable if you dont have a thread affinity implementation (hint: you dont)
 
 #if _INTEL_AFFINITY == 1
 

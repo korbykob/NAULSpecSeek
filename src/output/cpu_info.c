@@ -76,10 +76,10 @@ void print_cpu_features(cpu_t cpu_ctx){
 
 void print_cpu_cache_info(cpu_cache_info_t cache){
     TERM_DIVIDER_SMALL("  Cache Info  ", VENDOR_COLOUR);
-    printf("%sLevel 3: %s%ukB\n", WHITE, RED, cache.l3);
-    printf(" %s%sLevel 2: %s%ukB\n", SYMBOL_LIST_CHILD(VENDOR_COLOUR), WHITE, RED,  cache.l2);
-    printf("  %s%sLevel 1: %s%ukB\n", SYMBOL_LIST_CHILD(VENDOR_COLOUR), WHITE, RED,  cache.l1d);
-    printf("   %s%sLevel 1i: %s%ukB\n", SYMBOL_LIST_END(VENDOR_COLOUR), WHITE, RED,  cache.l1i);
+    printf("%sLevel 3: %s%ukB\n", WHITE, VENDOR_COLOUR, cache.l3);
+    printf(" %s%sLevel 2: %s%ukB\n", SYMBOL_LIST_CHILD(VENDOR_COLOUR), WHITE, VENDOR_COLOUR,  cache.l2);
+    printf("  %s%sLevel 1: %s%ukB\n", SYMBOL_LIST_CHILD(VENDOR_COLOUR), WHITE, VENDOR_COLOUR,  cache.l1d);
+    printf("   %s%sLevel 1i: %s%ukB\n", SYMBOL_LIST_END(VENDOR_COLOUR), WHITE, VENDOR_COLOUR,  cache.l1i);
 }
 
 void print_cpu_clock_info(){
@@ -94,6 +94,6 @@ void print_cpu_info(cpu_t cpu_ctx){
     print_cpu_processor_identifiers(cpu_ctx);
     print_cpu_specification(cpu_ctx);
     print_cpu_cache_info(cpu_get_cache_info());
-    print_cpu_clock_info();
+    //print_cpu_clock_info();   Buggy as fuck
     print_cpu_features(cpu_ctx);
 }

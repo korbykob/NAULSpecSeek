@@ -270,8 +270,7 @@ void cpu_check_misc_features(){
         cpu_print_feature(0, HAS_FEATURE(ebx, 8), "MEMBENF");
         cpu_print_feature(0, HAS_FEATURE(ebx, 14), "IBRS");
         cpu_print_feature(0, HAS_FEATURE(ebx, 15), "STIBP");
-        cpu_print_feature(0, HAS_FEATURE(ebx, 21), "INVLNPG");
-        cpu_print_feature(0, HAS_FEATURE(ebx, 24), "SSDB");
+        cpu_print_feature(0, HAS_FEATURE(ebx, 24), "SSBD");
         cpu_print_feature(0, HAS_FEATURE(ebx, 27), "CPPC");
         cpu_print_feature(0, HAS_FEATURE(ebx, 28), "PSFD");
     });
