@@ -2,7 +2,6 @@
 #define _TERMINAL_H     1
 
 #include <utils/arguments.h>
-#include <locale.h>
 
 #if defined(_WIN32)
 #include <windows.h>
