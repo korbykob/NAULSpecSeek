@@ -7,13 +7,13 @@
 #include <windows.h>
 #endif
 
-#define CLEAR_SCREEN() printf("\033[2J\033[H")
+//#define CLEAR_SCREEN() printf("\033[2J\033[H")
 #define ANSI(c) (get_arguments().no_ansi ? "" : (c))
 
 /*
     GCC ANSI Escape Codes (More Portable)
 */
-#if defined(__unix__)
+/*#if defined(__unix__)
 #define BLACK     ANSI("\e[0;30m")
 #define RED       ANSI("\e[0;31m")
 #define GREEN     ANSI("\e[0;32m")
@@ -32,12 +32,12 @@
 #define BCYAN     ANSI("\e[1;36m")
 #define BWHITE    ANSI("\e[1;37m")
 #define RESET     ANSI("\e[0m")
-#endif
+#endif*/
 
 /*
     MINGW ANSI Escape codes (For Windows CMD)
 */
-#if defined(_WIN32)
+/*#if defined(_WIN32)
 #define BLACK     ANSI("\x1b[0;30m")
 #define RED       ANSI("\x1b[0;31m")
 #define GREEN     ANSI("\x1b[0;32m")
@@ -56,7 +56,7 @@
 #define BCYAN     ANSI("\x1b[1;36m")
 #define BWHITE    ANSI("\x1b[1;37m")
 #define RESET     ANSI("\x1b[0m")
-#endif
+#endif*/
 
 /*
     Windows as per usual is different as their local codes are very different, they 
@@ -65,5 +65,29 @@
     can just check for the .65001 at the end, but for POSIX compliant systems
     we can simply just check for 'utf8' or 'UTF-8'. not sure which one i like more
 */
+
+/*
+    NAUL Escape Codes
+*/
+#define CLEAR_SCREEN() printf("\xff")
+
+#define BLACK     ANSI("\xfe\x01")
+#define RED       ANSI("\xfe\x05")
+#define GREEN     ANSI("\xfe\x04")
+#define YELLOW    ANSI("\xfe\x01")
+#define BLUE      ANSI("\xfe\x03")
+#define MAGENTA   ANSI("\xfe\x01")
+#define CYAN      ANSI("\xfe\x01")
+#define WHITE     ANSI("\xfe\x02")
+
+#define BBLACK    ANSI("\xfe\x01")
+#define BRED      ANSI("\xfe\x05")
+#define BGREEN    ANSI("\xfe\x04")
+#define BYELLOW   ANSI("\xfe\x01")
+#define BBLUE     ANSI("\xfe\x03")
+#define BMAGENTA  ANSI("\xfe\x01")
+#define BCYAN     ANSI("\xfe\x01")
+#define BWHITE    ANSI("\xfe\x02")
+#define RESET     ANSI("\xfe\x01")
 
 #endif
