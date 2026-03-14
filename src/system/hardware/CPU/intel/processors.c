@@ -17,7 +17,7 @@ unsigned int performance_core_count = 0;
 unsigned int intel_cpu_get_thread_count_per_core(){
     unsigned int eax, ebx, ecx, edx;
     if (cpu_get_max_supported_leaf() >= 0x1F){
-        return 0;
+        return 1;
     }else{
         for (unsigned int i = 0; i < 5; i++){
             cpuid(0x0B, i, &eax, &ebx, &ecx, &edx);
